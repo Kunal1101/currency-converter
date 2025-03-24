@@ -3,7 +3,7 @@ import "./App.css";
 import useCurrencyInfo from "./hooks/userCurrencyInfo";
 import InputBox from "./components/InputBox";
 
-function App() {
+const App = () => {
   const [amount, setAmount] = useState(0);
   const [from, setFrom] = useState("usd");
   const [to, setTo] = useState("inr");
@@ -12,7 +12,6 @@ function App() {
   const currencyInfo = useCurrencyInfo(from);
 
   const options = Object.keys(currencyInfo);
-  console.log(options);
 
   // swap Curreny
   const swapCurrency = () => {
@@ -22,8 +21,9 @@ function App() {
     setAmount(convertedAmount);
   };
 
+  // Convert Currency
   const convert = () => {
-    setConvertedAmount(amount * currencyInfo(to));
+    setConvertedAmount(amount * currencyInfo[to]);
   };
   const backgroundImage =
     "https://www.investopedia.com/thmb/mRfZzTNnohYjQpTUlDxbVKckZwk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-577968602-c7270f4d35544434a0fbbaaf034291c2.jpg";
@@ -47,16 +47,18 @@ function App() {
                 <InputBox
                   label="From"
                   amount={amount}
+                  minValue={0}
                   currencyOptions={options}
-                  onCurrencyChange={(currency) => setAmount(amount)}
-                  selectedCurrency={from}
+                  onAmountChange={(amount) => setAmount(amount)}
+                  onCurrencyChange={(currency) => setFrom(currency)}
+                  selectCurrency={from}
                 />
               </div>
               <div className="relative w-full h-0.5">
                 <button
                   type="button"
                   onClick={swapCurrency}
-                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-blue-600 text-white px-2 py-0.5"
+                  className="absolute cursor-pointer left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white rounded-md bg-blue-600 text-white px-2 py-0.5"
                 >
                   swap
                 </button>
@@ -64,18 +66,18 @@ function App() {
               <div className="w-full mt-1 mb-4">
                 <InputBox
                   label="To"
-                  amount={convertedAmount}
+                  amount={convertedAmount.toFixed(2)}
                   currencyOptions={options}
                   onCurrencyChange={(currency) => setTo(currency)}
-                  selectedCurrency={from}
+                  selectCurrency={to}
                   amountDisable
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg"
+                className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg cursor-pointer"
               >
-                Convert {from} to {to}
+                Convert {from.toUpperCase()} to {to.toUpperCase()}
               </button>
             </form>
           </div>
@@ -83,6 +85,6 @@ function App() {
       </div>
     </>
   );
-}
+};
 
 export default App;
