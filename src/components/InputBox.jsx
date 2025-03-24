@@ -1,8 +1,9 @@
 import React, { useId } from "react";
 
-function InputBox({
+const InputBox = ({
   label,
   amount,
+  minValue,
   onAmountChange,
   onCurrencyChange,
   currencyOptions = [],
@@ -10,7 +11,7 @@ function InputBox({
   amountDisable = false,
   currencyDisable = false,
   className = "",
-}) {
+}) => {
   const amountInputId = useId();
 
   return (
@@ -24,6 +25,7 @@ function InputBox({
         </label>
         <input
           id={amountInputId}
+          min={minValue}
           className="outline-none w-full bg-transparent py-1.5"
           type="number"
           placeholder="Amount"
@@ -51,6 +53,6 @@ function InputBox({
       </div>
     </div>
   );
-}
+};
 
 export default InputBox;
